@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>星期日期練習 1下A 2.1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;600&display=swap">
+<style>
+/* Layout: one A4-like worksheet column; each section is a sheet block with a number-chain / riddle grid. */
+:root{
+  --bg:#f3f6f4; --paper:#ffffff; --ink:#1f2a27; --muted:#5d6b66; --line:#c9d4cf;
+  --accent:#1c7a63; --accent-soft:#e1f1ea; --good:#1f8a4c; --bad:#c2412d; --hl:#fff4c2;
+  --f-display:"LXGW WenKai TC","Kaiti TC","STKaiti","Noto Sans TC",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141b19; --paper:#1d2624; --ink:#e7eeeb; --muted:#9aa9a3; --line:#3a4a45;
+  --accent:#5cc7a6; --accent-soft:#1f3a32; --good:#5fd08f; --bad:#ff8a73; --hl:#4a4220; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141b19; --paper:#1d2624; --ink:#e7eeeb; --muted:#9aa9a3; --line:#3a4a45;
+  --accent:#5cc7a6; --accent-soft:#1f3a32; --good:#5fd08f; --bad:#ff8a73; --hl:#4a4220; color-scheme:dark}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+.wrap{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header.top{display:flex;flex-direction:column;gap:6px}
+.eyebrow{font-size:13px;letter-spacing:.08em;color:var(--muted)}
+h1{font-family:var(--f-display);font-size:2rem;line-height:1.25;margin:0;text-wrap:balance}
+.lead{margin:0;color:var(--muted);max-width:62ch}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs button,.btn{font:inherit;font-size:15px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);
+  padding:6px 14px;border-radius:999px;cursor:pointer}
+.tabs button[aria-selected="true"],.btn.solid{background:var(--accent);color:var(--paper)}
+.btn:focus-visible,.tabs button:focus-visible,input:focus-visible,.chip:focus-visible,.tf button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sheet{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:20px max(16px,3vw);display:flex;flex-direction:column;gap:22px}
+.sheet-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:10px}
+.sheet-head h2{font-family:var(--f-display);font-size:1.5rem;margin:0}
+.meta{color:var(--muted);font-size:15px}
+.namebar{display:flex;gap:24px;flex-wrap:wrap;color:var(--muted);font-size:15px}
+.namebar span{border-bottom:1px solid var(--line);min-width:120px;display:inline-block}
+section.part{display:flex;flex-direction:column;gap:12px}
+.part h3{font-family:var(--f-display);font-size:1.2rem;margin:0;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.part h3 .marks{font-family:var(--f-body);font-size:14px;color:var(--muted);font-weight:400}
+.instr{margin:0;color:var(--muted)}
+ol.items{margin:0;padding-left:1.8em;display:flex;flex-direction:column;gap:14px}
+ol.items>li{padding-left:4px}
+.rule{font-size:14px;color:var(--accent);background:var(--accent-soft);padding:1px 8px;border-radius:4px;margin-left:6px;white-space:nowrap}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:4px;font-variant-numeric:tabular-nums;font-size:1.15rem}
+.chain .arrow{color:var(--muted)}
+.chain .given{min-width:2.4em;text-align:center}
+input.box{width:2.9em;height:2.1em;font:inherit;font-size:1.1rem;text-align:center;border:2px solid var(--ink);border-radius:3px;
+  background:var(--paper);color:var(--ink);font-variant-numeric:tabular-nums;padding:0}
+input.box.ok{border-color:var(--good);background:color-mix(in srgb,var(--good) 14%,var(--paper))}
+input.box.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--paper))}
+.bubble{border:1.5px solid var(--line);border-radius:14px;padding:10px 14px;background:var(--paper);max-width:60ch}
+.who{font-family:var(--f-display);font-weight:700;color:var(--accent);margin-right:6px}
+.dots{display:flex;flex-wrap:wrap;gap:12px;margin:6px 0}
+.grp{display:grid;gap:4px;padding:6px;border:1.5px dashed var(--line);border-radius:8px}
+.grp i{width:14px;height:14px;border-radius:50%;background:var(--accent);display:block}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{font:inherit;font-size:1.2rem;min-width:3em;padding:4px 10px;border:2px solid transparent;border-radius:999px;background:var(--accent-soft);color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--hl)}
+.chip.ok{border-color:var(--good)} .chip.no{border-color:var(--bad)}
+.tf{display:inline-flex;gap:6px;margin-left:8px;vertical-align:middle}
+.tf button{font:inherit;width:2.2em;height:2em;border:2px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);cursor:pointer}
+.tf button[aria-pressed="true"]{border-color:var(--ink);background:var(--hl)}
+.tf.ok button[aria-pressed="true"]{border-color:var(--good)} .tf.no button[aria-pressed="true"]{border-color:var(--bad)}
+.sg{font:inherit;font-size:1.2rem;width:2.2em;height:2em;border:2px dashed var(--accent);border-radius:6px;background:var(--paper);color:var(--ink);cursor:pointer;font-weight:700}
+.sg:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sgrp.ok .sg{border-style:solid;border-color:var(--good)} .sgrp.no .sg{border-style:solid;border-color:var(--bad)}
+.order.ok .sg{border-style:solid;border-color:var(--good)} .order.no .sg{border-style:solid;border-color:var(--bad)}
+.order{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px;font-variant-numeric:tabular-nums}
+.cmp{display:inline-flex;gap:8px;align-items:center;font-size:1.2rem;font-variant-numeric:tabular-nums;margin-left:4px}
+.clockrow{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:4px}
+.clockrow .txt{min-width:0;flex:1 1 180px}
+.pickrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.pickrow button{border:2.5px solid transparent;border-radius:12px;background:var(--accent-soft);padding:4px;cursor:pointer;line-height:0}
+.pickrow button[aria-pressed="true"]{border-color:var(--ink);background:var(--hl)}
+.pick.ok button[aria-pressed="true"]{border-color:var(--good)} .pick.no button[aria-pressed="true"]{border-color:var(--bad)}
+.pickrow button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.weekwrap{overflow-x:auto;max-width:100%}
+table.week{border-collapse:collapse;width:100%;table-layout:fixed;text-align:center;font-size:14px}
+table.week th,table.week td{border:1.5px solid var(--line);padding:5px 1px}
+table.week th{background:var(--accent-soft);font-weight:600;line-height:1.3}
+table.week .emo{display:block;font-size:1.8rem;line-height:1.2}
+table.week .lbl2{display:block;font-size:12px;line-height:1.3}
+select.sel{font:inherit;font-size:1.1rem;min-width:3em;height:2.1em;border:2px solid var(--ink);border-radius:3px;background:var(--paper);color:var(--ink);text-align:center;padding:0 4px;margin:0 2px}
+select.sel.ok{border-color:var(--good);background:color-mix(in srgb,var(--good) 14%,var(--paper))}
+select.sel.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--paper))}
+select.sel:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.qline{line-height:2.4}
+.toyrow button{font-size:1.8rem;line-height:1.2;padding:4px 10px}
+.ans-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line);padding-top:14px}
+.score{font-family:var(--f-display);font-size:1.3rem;color:var(--accent)}
+.note{font-size:14px;color:var(--muted);margin:0}
+.parent{font-size:15px;color:var(--muted);border-left:3px solid var(--accent);padding-left:12px;margin:0;max-width:65ch}
+.voicebar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 12px;
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.voicebar .lbl{font-weight:600}
+.seg{display:inline-flex;border:1.5px solid var(--accent);border-radius:999px;overflow:hidden}
+.seg button{font:inherit;font-size:15px;border:0;background:transparent;color:var(--accent);padding:5px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--paper)}
+.seg button:focus-visible,.spk:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.vstatus{font-size:13px;color:var(--muted);flex-basis:100%}
+.vstatus:empty{display:none}
+.spk{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:none;border-radius:50%;border:1.5px solid var(--accent);
+  background:var(--accent-soft);color:var(--accent);cursor:pointer;padding:0;vertical-align:middle;margin-right:6px}
+.spk svg{width:18px;height:18px}
+.spk.on{background:var(--accent);color:var(--paper)}
+.speaking{background:var(--hl);border-radius:6px;box-shadow:0 0 0 6px var(--hl)}
+@media (max-width:480px){h1{font-size:1.6rem} input.box{width:2.6em}}
+@media print{
+  body{background:#fff;color:#000;padding:0} .tabs,.actions,.no-print,.voicebar,.spk{display:none!important}
+  .sheet{border:none;padding:0;break-after:page} [hidden]{display:block!important}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">港大同學會小學 · 一年級數學 · 1下A 單元 2 日期 · 根據 WS 2.1</div>
+    <h1>日期：星期和昨天、今天、明天</h1>
+    <p class="lead">練習卷和模擬測驗的題型跟學校工作紙一樣：看一星期的表格回答問題，用「昨天」「今天」「明天」「後天」，再推算星期幾。可以在畫面上直接作答，然後按「對答案」；也可以列印出來用筆做。</p>
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tab-practice" aria-selected="true" data-show="practice">練習卷</button>
+      <button role="tab" id="tab-test" aria-selected="false" data-show="test">模擬測驗</button>
+      <button role="tab" id="tab-parent" aria-selected="false" data-show="parent">家長須知</button>
+    </div>
+  </header>
+
+  <div class="voicebar" role="group" aria-label="讀出題目">
+    <span class="lbl">讀出題目：</span>
+    <span class="seg">
+      <button type="button" id="lang-yue" data-lang="yue" aria-pressed="true">廣東話</button>
+      <button type="button" id="lang-cmn" data-lang="cmn" aria-pressed="false">普通話</button>
+    </span>
+    <span class="seg">
+      <button type="button" id="rate-slow" data-rate="0.75" aria-pressed="true">慢</button>
+      <button type="button" id="rate-norm" data-rate="1" aria-pressed="false">正常</button>
+    </span>
+    <span class="note">按題目旁的 <b>喇叭</b> 聽題目，再按一次停止。</span>
+    <span class="vstatus" id="vstatus" aria-live="polite"></span>
+  </div>
+
+  <div id="practice" class="sheet"></div>
+  <div id="test" class="sheet" hidden></div>
+  <div id="parent" class="sheet" hidden>
+    <div class="sheet-head"><h2>家長須知</h2></div>
+    <p class="parent">一星期有 7 天，次序是：星期日、星期一、星期二、星期三、星期四、星期五、星期六，然後又回到星期日。可以叫孩子用手指逐天數。</p>
+    <p class="parent"><b>前天</b>←<b>昨天</b>←<b>今天</b>→<b>明天</b>→<b>後天</b>。例如今天是星期四：昨天是星期三，明天是星期五，後天是星期六。</p>
+    <p class="parent">最易錯的是跨週：星期六的明天是星期日，星期日的昨天是星期六。「如果昨天是星期二，明天是星期幾？」這類題，先找出今天（星期三），再往後數一天。</p>
+    <p class="parent">在畫面上作答時，點方格會彈出選單，選「日、一、二…六」或「昨、今、明、後」。表格旁邊的喇叭會把整星期的表格讀出來。</p>
+    <p class="parent">模擬測驗建議限時 20 分鐘。按「交卷」會計分；做完後可按「顯示答案」一起檢討錯題。</p>
+  </div>
+</div>
+
+<script>
+const TOY={"🧸":"小熊","🐰":"小兔","🐷":"小豬","🐱":"小貓","🐶":"小狗","🐭":"小老鼠"};
+const TOYS=["🧸","🐰","🐷","🐱","🐶","🐭"];
+const DAYS=["日","一","二","三","四","五","六"];
+const RELS=["前","昨","今","明","後"];
+const PRACTICE = {
+  title:"練習卷", meta:"約 20 分鐘",
+  parts:[
+    {h:"一、快餐店的玩偶", instr:"以下是快餐店在每星期的各天可換購的玩偶。", type:"q",
+     table:["🐶","🐱","🐰","🧸","🐰","🐭","🐷"], items:[
+      {s:["在星期",{day:"三"},"可換購 🧸。"]},
+      {s:["每星期有",{num:2},"天可換購 🐰。"]},
+      {s:["天峰說：「我在昨天換購了 🐭。」今天是星期",{day:"六"},"。"]},
+      {s:["如果明天是星期四，昨天可換購哪一款玩偶？",{toy:"🐰"}]},
+      {s:["昨天和明天都可換購 🐰，今天是星期",{day:"三"},"。"]},
+      {s:["今天是星期日，後天可換購哪一款玩偶？",{toy:"🐰"}]},
+    ]},
+    {h:"二、小喬的課外活動時間表", instr:"根據小喬一星期的課外活動時間表，回答問題。", type:"q",
+     table:["","🏊 游泳班","","📘 英文班","🏊 游泳班","","💃 跳舞班"], items:[
+      {s:["小喬一星期有",{num:4},"天要上課外活動班。"]},
+      {s:["小喬在星期",{day:"六"},"上跳舞班。"]},
+      {s:["小喬一星期有",{num:2},"天要上游泳班。"]},
+      {note:"請用「昨」、「今」、「明」或「後」回答。", s:["今天是星期二，小喬在",{rel:"昨"},"天上游泳班，在",{rel:"明"},"天上英文班。"]},
+      {s:["今天是星期四，小喬在",{rel:"昨"},"天上英文班，",{rel:"今"},"天上游泳班，",{rel:"後"},"天上跳舞班。"]},
+    ]},
+    {h:"三、填填看", type:"q", items:[
+      {s:["如果昨天是星期四，明天便是星期",{day:"六"},"。"]},
+      {s:["如果明天是星期日，昨天便是星期",{day:"五"},"。"]},
+      {s:["如果今天是星期一，後天便是星期",{day:"三"},"。"]},
+      {s:["星期六的明天是星期",{day:"日"},"。"]},
+    ]},
+  ]
+};
+
+const TEST = {
+  title:"模擬測驗", meta:"限時 20 分鐘", test:true,
+  parts:[
+    {h:"一、文具店的贈品", instr:"以下是文具店在每星期的各天送出的玩偶。", type:"q", per:1,
+     table:["🐭","🐷","🐶","🐷","🐱","🧸","🐰"], items:[
+      {s:["在星期",{day:"四"},"可得到 🐱。"]},
+      {s:["每星期有",{num:2},"天可得到 🐷。"]},
+      {s:["欣欣說：「我明天會得到 🧸。」今天是星期",{day:"四"},"。"]},
+      {s:["如果昨天是星期一，明天可得到哪一款玩偶？",{toy:"🐷"}]},
+      {s:["昨天和明天都可得到 🐷，今天是星期",{day:"二"},"。"]},
+    ]},
+    {h:"二、大文的課外活動時間表", instr:"根據大文一星期的課外活動時間表，回答問題。", type:"q", per:1,
+     table:["","⚽ 足球班","⚫ 圍棋班","","⚽ 足球班","🎹 鋼琴班","⚽ 足球班"], items:[
+      {s:["大文一星期有",{num:5},"天要上課外活動班。"]},
+      {s:["大文在星期",{day:"五"},"上鋼琴班。"]},
+      {s:["大文一星期有",{num:3},"天要上足球班。"]},
+      {note:"請用「昨」、「今」、「明」或「後」回答。", s:["今天是星期一，大文在",{rel:"今"},"天上足球班，在",{rel:"明"},"天上圍棋班。"]},
+      {s:["今天是星期三，大文在",{rel:"昨"},"天上圍棋班，",{rel:"明"},"天上足球班，",{rel:"後"},"天上鋼琴班。"]},
+    ]},
+    {h:"三、填填看", type:"q", per:1, items:[
+      {s:["如果昨天是星期六，明天便是星期",{day:"一"},"。"]},
+      {s:["如果明天是星期三，昨天便是星期",{day:"一"},"。"]},
+      {s:["如果今天是星期五，後天便是星期",{day:"日"},"。"]},
+      {s:["如果後天是星期二，今天便是星期",{day:"日"},"。"]},
+      {s:["一星期有",{num:7},"天。"]},
+    ]},
+  ]
+};
+
+const sayToys=t=>t.replace(/🧸|🐰|🐷|🐱|🐶|🐭/gu,m=>TOY[m]).replace(/🏊|📘|💃|⚽|⚫|🎹/gu,"");
+function weekTable(cells){
+  const w=el("div","weekwrap"); const t=el("table","week");
+  t.innerHTML="<thead><tr>"+DAYS.map(d=>`<th>星期<br>${d}</th>`).join("")+"</tr></thead><tbody><tr>"+cells.map(c=>{
+    const m=c.match(/^(\S+)\s+(.+)$/); return `<td>${m?`<span class="emo">${m[1]}</span><span class="lbl2">${m[2]}</span>`:(c?`<span class="emo">${c}</span>`:"")}</td>`;}).join("")+"</tr></tbody>";
+  w.append(t); return w;
+}
+function selBox(opts,ans,pts,prefix,label){const s=el("select","sel"); s.id=prefix+"-x"+(uid++); s.dataset.a=ans; s.dataset.p=pts; s.setAttribute("aria-label",label);
+  s.innerHTML='<option value="">　</option>'+opts.map(o=>`<option value="${o}">${o}</option>`).join(""); return s;}
+function tableSay(p,l){ if(!p.table) return ""; return p.table.map((c,i)=>`星期${DAYS[i]}，${c?sayToys(c):(l==="yue"?"冇":"沒有")}`).join("。")+"。"; }
+
+/* ---------- Read aloud (Web Speech API, uses the device's own Cantonese / Mandarin voices) ---------- */
+const TTS={lang:"yue",rate:0.75,voices:[],cur:null};
+const SYN=("speechSynthesis" in window)?window.speechSynthesis:null;
+try{const s=JSON.parse(localStorage.getItem("tts")||"{}"); if(s.lang) TTS.lang=s.lang; if(s.rate===0.75||s.rate===1) TTS.rate=s.rate;}catch(e){}
+function saveTTS(){try{localStorage.setItem("tts",JSON.stringify({lang:TTS.lang,rate:TTS.rate}));}catch(e){}}
+function loadVoices(){ if(SYN){ TTS.voices=SYN.getVoices()||[]; } voiceStatus(); }
+function pickVoice(lang){
+  const v=TTS.voices, L=x=>(x.lang||"").toLowerCase().replace("_","-");
+  if(lang==="yue") return v.find(x=>/^(zh-hk|yue)/.test(L(x))) || v.find(x=>/cantonese|粵|廣東/i.test(x.name)) || null;
+  return v.find(x=>L(x)==="zh-cn") || v.find(x=>L(x)==="zh-tw") || v.find(x=>/^(cmn|zh)/.test(L(x)) && !/^zh-hk/.test(L(x))) || v.find(x=>/mandarin|普通話|國語/i.test(x.name)) || null;
+}
+function voiceStatus(){
+  const st=document.getElementById("vstatus"); if(!st) return;
+  if(document.getElementById("audio-data")){st.textContent="";return;}
+  if(!SYN){st.textContent="這個瀏覽器不支援朗讀。請改用 iPad / iPhone 的 Safari，或 Android / 電腦的 Chrome。";return;}
+  if(!TTS.voices.length){st.textContent="";return;}
+  const v=pickVoice(TTS.lang);
+  st.textContent=v?"":(TTS.lang==="yue"
+    ?"這部裝置找不到廣東話語音，會改用預設中文聲音。可在裝置設定中加入「粵語（香港）」語音。"
+    :"這部裝置找不到普通話語音，會改用預設中文聲音。可在裝置設定中加入「中文（普通話）」語音。");
+}
+if(SYN){ loadVoices(); SYN.onvoiceschanged=loadVoices; }
+function stopSpeak(){ if(SYN&&(SYN.speaking||SYN.pending)) SYN.cancel(); try{PLAYER.pause();}catch(e){} if(TTS.cur){TTS.cur.btn.classList.remove("on"); TTS.cur.box&&TTS.cur.box.classList.remove("speaking"); TTS.cur=null;} }
+const norm=t=>t.replace(/\$(\d+)/g,"$1元").replace(/[✓]/g,"剔號").replace(/[✗]/g,"交叉").replace(/□/g,"方格").replace(/「<」/g,"小於符號").replace(/「>」/g,"大於符號");
+let AUDIO=null; const PLAYER=new Audio(); PLAYER.preload="auto";
+function audioFor(lang,text){
+  if(AUDIO===null){ try{AUDIO=JSON.parse(document.getElementById("audio-data").textContent);}catch(e){AUDIO={};} }
+  const a=AUDIO[lang]&&AUDIO[lang][text]; return a?"data:audio/mpeg;base64,"+a:null;
+}
+function speak(raw,btn,box){
+  const text=norm(raw);
+  const same=TTS.cur&&TTS.cur.btn===btn; stopSpeak(); if(same) return;
+  const src=audioFor(TTS.lang,text);
+  if(src){
+    TTS.cur={btn,box}; btn.classList.add("on"); box&&box.classList.add("speaking");
+    PLAYER.src=src; PLAYER.playbackRate=TTS.rate; PLAYER.preservesPitch=true;
+    PLAYER.onended=PLAYER.onerror=()=>{ if(TTS.cur&&TTS.cur.btn===btn) stopSpeak(); };
+    const pr=PLAYER.play(); if(pr&&pr.catch) pr.catch(()=>{ if(TTS.cur&&TTS.cur.btn===btn) stopSpeak(); });
+    return;
+  }
+  if(!SYN){voiceStatus();return;}
+  const u=new SpeechSynthesisUtterance(text);
+  const v=pickVoice(TTS.lang); if(v){u.voice=v;u.lang=v.lang;} else u.lang=TTS.lang==="yue"?"zh-HK":"zh-CN";
+  u.rate=TTS.rate;
+  TTS.cur={btn,box}; btn.classList.add("on"); box&&box.classList.add("speaking");
+  u.onend=u.onerror=()=>{ if(TTS.cur&&TTS.cur.btn===btn) stopSpeak(); };
+  if(SYN.paused) SYN.resume();
+  SYN.speak(u);
+}
+const ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+window.__SAYS=[];
+function spk(textFn,boxFn){ window.__SAYS.push(textFn);const b=document.createElement("button"); b.type="button"; b.className="spk"; b.innerHTML=ICON; b.setAttribute("aria-label","讀出題目");
+  b.onclick=()=>speak(textFn(TTS.lang),b,boxFn?boxFn():b.parentElement); return b;}
+const HOW=l=>l==="yue"?"幾多":"多少";
+const BLANK="空格";
+const chainSay=seq=>seq.map(v=>Array.isArray(v)?BLANK:v).join("，");
+function sync(){
+  document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===TTS.lang)));
+  document.querySelectorAll("[data-rate]").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.rate===TTS.rate)));
+  voiceStatus();
+}
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{TTS.lang=b.dataset.lang; stopSpeak(); saveTTS(); sync();});
+document.querySelectorAll("[data-rate]").forEach(b=>b.onclick=()=>{TTS.rate=+b.dataset.rate; saveTTS(); sync();});
+sync();
+
+let uid=0;
+const el=(tag,cls,html)=>{const e=document.createElement(tag); if(cls) e.className=cls; if(html!=null) e.innerHTML=html; return e;};
+function box(ans,pts,prefix){const i=el("input","box"); i.id=prefix+"-b"+(uid++); i.inputMode="numeric"; i.autocomplete="off"; i.maxLength=3; i.dataset.a=ans; i.dataset.p=pts; i.setAttribute("aria-label","答案"); return i;}
+function signBtn(prefix,opts){opts=opts||["<",">"]; const b=el("button","sg","?"); b.type="button"; b.id=prefix+"-s"+(uid++); b.setAttribute("aria-label","選擇符號");
+  b.onclick=()=>{b.textContent=b.textContent===opts[0]?opts[1]:opts[0];}; return b;}
+function chainRow(seq,pts,prefix){
+  const row=el("div","chain");
+  seq.forEach((v,k)=>{ if(k) row.append(el("span","arrow","→"));
+    row.append(Array.isArray(v)? box(v[0],pts,prefix) : el("span","given",String(v))); });
+  return row;
+}
+function render(root,data,prefix){
+  root.innerHTML="";
+  const head=el("div","sheet-head");
+  head.append(el("h2",null,data.title), el("span","meta",data.meta+(data.test?` · 滿分 <span id="${prefix}-full"></span> 分`:"")));
+  root.append(head);
+  root.append(el("div","namebar",`<div>姓名：<span></span></div><div>日期：<span></span></div>${data.test?'<div>得分：<span></span></div>':''}`));
+  data.parts.forEach((p,pi)=>{
+    const s=el("section","part"); const per=p.per||1;
+    const h=el("h3",null,p.h); s.append(h);
+    h.prepend(spk(l=>p.h+"。"+(p.instr||"")+tableSay(p,l)+(p.type==="circle"?`請點選所有${p.pick}。`:""), ()=>h));
+    if(p.instr) s.append(el("p","instr",p.instr));
+    if(p.table) s.append(weekTable(p.table));
+    if(p.type==="circle"){
+      s.append(el("p","instr",`點選（或用筆圈出）所有${p.pick}。`));
+      const wrap=el("div","chips"); wrap.dataset.pick=p.pick; wrap.dataset.p=per;
+      p.nums.forEach(n=>{const b=el("button","chip",String(n)); b.type="button"; b.id=`${prefix}-c${pi}-${n}`; b.setAttribute("aria-pressed","false"); b.dataset.n=n;
+        b.onclick=()=>b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")==="true"?"false":"true"); wrap.append(b);});
+      s.append(wrap);
+      if(data.test){const tgt=p.nums.filter(n=>(p.pick==="單數")===(n%2===1)).length; h.querySelector("span")||h.append(el("span","marks",`（${tgt*per} 分，圈錯一個扣 1 分）`));}
+    } else {
+      const ol=el("ol","items");
+      p.items.forEach(it=>{
+        const li=el("li");
+        if(p.type==="chain"){ if(it.rule) li.append(el("span","rule",it.rule)); li.append(chainRow(it.seq,per,prefix)); }
+        if(p.type==="dots"){
+          const d=el("div","dots"); const cols=it.g===10?5:it.g;
+          for(let k=0;k<it.n;k++){const g=el("div","grp"); g.style.gridTemplateColumns=`repeat(${cols},14px)`; for(let j=0;j<it.g;j++) g.append(el("i")); d.append(g);}
+          li.append(el("span",null,`每 ${it.g} 粒一數：`), d);
+          if(!p.noChain){const seq=[it.g]; for(let k=2;k<=it.n;k++) seq.push([it.g*k]); li.append(chainRow(seq,1,prefix));}
+          const line=el("div","ans-line"); line.append(el("span",null,"共有"), box(it.g*it.n,per,prefix), el("span",null,it.unit+"。")); li.append(line);
+        }
+        if(p.type==="tf"){
+          li.append(el("span",null,it.q));
+          const g=el("span","tf"); g.dataset.a=it.a; g.dataset.p=per;
+          [["✓",true],["✗",false]].forEach(([t,v])=>{const b=el("button",null,t); b.type="button"; b.id=prefix+"-t"+(uid++); b.dataset.v=v; b.setAttribute("aria-pressed","false"); b.setAttribute("aria-label",v?"對":"錯");
+            b.onclick=()=>{g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");}; g.append(b);});
+          li.append(g);
+        }
+        if(p.type==="riddle"){
+          const bub=el("div","bubble"); bub.append(el("span","who",it.who+"："), document.createTextNode(it.t+" "), box(it.a,per,prefix), document.createTextNode(" "+it.u+"。"));
+          li.append(bub);
+        }
+        if(p.type==="sort"){
+          li.append(el("div",null,sortQ(it)));
+          const wrap=el("div","chips"); wrap.dataset.div=it.div.join(","); wrap.dataset.p=per; wrap.style.marginTop="6px";
+          it.nums.forEach(n=>{const b=el("button","chip",String(n)); b.type="button"; b.id=prefix+"-c"+(uid++); b.setAttribute("aria-pressed","false"); b.dataset.n=n;
+            b.onclick=()=>b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")==="true"?"false":"true"); wrap.append(b);});
+          li.append(wrap);
+          const ans=it.nums.filter(n=>fits(n,it.div)).sort((a,b)=>it.asc?a-b:b-a);
+          const row=el("div","order sgrp"); row.dataset.a=it.asc?"<":">"; row.dataset.p=per;
+          ans.forEach((n,k)=>{ if(k) row.append(signBtn(prefix)); row.append(box(n,per,prefix)); });
+          li.append(row);
+        }
+        if(p.type==="cmp"){
+          const row=el("span","cmp sgrp"); row.dataset.a=it.x<it.y?"<":">"; row.dataset.p=per;
+          row.append(el("span",null,String(it.x)), signBtn(prefix), el("span",null,String(it.y)));
+          li.append(row);
+        }
+        if(p.type==="q"){
+          if(it.note) li.append(el("div","rule",it.note));
+          const line=el("div","qline");
+          it.s.forEach(seg=>{
+            if(typeof seg==="string"){ line.append(document.createTextNode(seg)); return; }
+            if(seg.day) line.append(selBox(DAYS,seg.day,per,prefix,"星期幾"));
+            if(seg.rel) line.append(selBox(RELS,seg.rel,per,prefix,"哪一天"));
+            if(seg.num!=null) line.append(box(seg.num,per,prefix));
+            if(seg.toy){ const row=el("div","pickrow pick toyrow"); row.dataset.a=TOYS.indexOf(seg.toy); row.dataset.p=per;
+              TOYS.forEach((t,k)=>{const b=el("button",null,t); b.type="button"; b.id=prefix+"-k"+(uid++); b.dataset.i=k; b.setAttribute("aria-pressed","false"); b.setAttribute("aria-label",TOY[t]);
+                b.onclick=()=>{row.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");}; row.append(b);});
+              line.append(row); }
+          });
+          li.append(line);
+        }
+        if(p.type==="clock"){
+          const row=el("div","clockrow"); row.innerHTML=clockSVG(it);
+          const txt=el("div","txt"); const line=el("div","ans-line");
+          const g=el("span","sgrp"); g.dataset.a=it.m?"半":"正"; g.dataset.p=per; g.append(signBtn(prefix,["正","半"]));
+          line.append(el("span",null,it.t?"在":""), box(it.h,per,prefix), el("span",null,"時"), g, el("span",null,it.t?"，":""));
+          txt.append(line); if(it.t) txt.append(el("div",null,it.t)); row.append(txt); li.append(row);
+        }
+        if(p.type==="pick"){
+          li.append(el("div",null,`哪一個鐘面是 <b>${it.q}</b>？`));
+          const row=el("div","pickrow pick"); row.dataset.a=it.a; row.dataset.p=per;
+          it.opts.forEach((c,k)=>{const b=el("button",null,clockSVG(c,92)); b.type="button"; b.id=prefix+"-k"+(uid++); b.dataset.i=k; b.setAttribute("aria-pressed","false"); b.setAttribute("aria-label","鐘面 "+(k+1));
+            b.onclick=()=>{row.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");}; row.append(b);});
+          li.append(row);
+        }
+        if(p.type==="tfc"){
+          const row=el("div","clockrow"); row.innerHTML=clockSVG(it.c,110);
+          const txt=el("div","txt"); txt.append(el("span",null,it.label));
+          const g=el("span","tf"); g.dataset.a=it.a; g.dataset.p=per;
+          [["✓",true],["✗",false]].forEach(([t,v])=>{const b=el("button",null,t); b.type="button"; b.id=prefix+"-t"+(uid++); b.dataset.v=v; b.setAttribute("aria-pressed","false"); b.setAttribute("aria-label",v?"對":"錯");
+            b.onclick=()=>{g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");}; g.append(b);});
+          txt.append(g); row.append(txt); li.append(row);
+        }
+        if(p.type==="word"){
+          li.append(el("div",null,it.t), chainRow(it.seq,per,prefix));
+          const line=el("div","ans-line"); line.append(el("span",null,it.pre), box(it.a,per,prefix), el("span",null,it.u+"。")); li.append(line);
+        }
+        const say={
+          chain:l=>(it.rule?it.rule+"。":"")+chainSay(it.seq)+"。"+(l==="yue"?"空格要填咩數字？":"空格要填甚麼數字？"),
+          dots:l=>`每組有 ${it.g} 粒。每 ${it.g} 粒一數，一共有${HOW(l)}粒？`,
+          tf:l=>it.q+(l==="yue"?"啱定錯？":"對還是錯？"),
+          riddle:l=>it.who+(l==="yue"?"話：":"說：")+it.t+HOW(l)+it.u+"？",
+          word:l=>it.t+"。"+chainSay(it.seq)+"。",
+          q:l=>(it.note?it.note:"")+sayToys(it.s.map(seg=>typeof seg==="string"?seg:(seg.toy?"":(seg.day?"幾":(seg.rel?"空格":(l==="yue"?"幾多":"多少")))) ).join("")),
+          clock:l=>(it.t?it.t+" ":"")+(l==="yue"?"睇吓個鐘，係幾點？係幾點正，定係幾點半？":"看看鐘面，是幾點？是幾點正，還是幾點半？"),
+          pick:l=>(l==="yue"?`邊一個鐘面係 ${it.q}？`:`哪一個鐘面是 ${it.q}？`),
+          tfc:l=>(l==="yue"?`呢個鐘面係 ${it.label}，啱定錯？`:`這個鐘面是 ${it.label}，對還是錯？`),
+          sort:l=>sortQ(it)+(l==="yue"?"啲數字係：":"數字有：")+it.nums.join("，")+"。",
+          cmp:l=>`${it.x} 同 ${it.y}，${l==="yue"?"應該用":"應該用"}大於定小於符號？`.replace("同",l==="yue"?"同":"和").replace("定",l==="yue"?"定":"還是"),
+        }[p.type];
+        if(say){ const tgt=p.type==="riddle"?li.querySelector(".bubble"):li; tgt.prepend(spk(say,()=>li)); }
+        ol.append(li);
+      });
+      s.append(ol);
+      if(data.test){ const m=sectionMax(s); h.append(el("span","marks",`（${m} 分）`)); }
+    }
+    root.append(s);
+  });
+  const act=el("div","actions");
+  const chk=el("button","btn solid",data.test?"交卷":"對答案"); chk.type="button"; chk.id=prefix+"-check";
+  const show=el("button","btn","顯示答案"); show.type="button"; show.id=prefix+"-show";
+  const clr=el("button","btn","清除重做"); clr.type="button"; clr.id=prefix+"-clear";
+  const sc=el("span","score"); sc.id=prefix+"-score"; sc.setAttribute("aria-live","polite");
+  act.append(chk,show,clr,sc); root.append(act);
+  if(data.test){ document.getElementById(prefix+"-full").textContent=sheetMax(root); }
+  chk.onclick=()=>{const [got,max]=grade(root); sc.textContent=data.test?`得分：${got} / ${max}`:`答對 ${got} / ${max}`;};
+  show.onclick=()=>{fillAnswers(root); grade(root); sc.textContent="已顯示答案";};
+  clr.onclick=()=>{render(root,data,prefix);};
+}
+function sectionMax(s){let m=0; s.querySelectorAll("input.box,select.sel").forEach(i=>m+=+i.dataset.p); s.querySelectorAll(".tf,.sgrp,.pick").forEach(t=>m+=+t.dataset.p); s.querySelectorAll(".chips").forEach(c=>m+=targets(c).length*+c.dataset.p); return m;}
+function sheetMax(root){let m=0; root.querySelectorAll("section.part").forEach(s=>{m+=sectionMax(s);}); return m;}
+function targets(c){const all=[...c.querySelectorAll(".chip")]; if(c.dataset.div){const d=c.dataset.div.split(",").map(Number); return all.filter(b=>fits(+b.dataset.n,d));} return all.filter(b=>(c.dataset.pick==="單數")===(+b.dataset.n%2===1));}
+function grade(root){
+  let got=0,max=0;
+  root.querySelectorAll("input.box").forEach(i=>{const p=+i.dataset.p; max+=p; i.classList.remove("ok","no"); if(i.value.trim()==="") {i.classList.add("no"); return;} const ok=+i.value.trim()===+i.dataset.a; i.classList.add(ok?"ok":"no"); if(ok) got+=p;});
+  root.querySelectorAll(".tf").forEach(t=>{const p=+t.dataset.p; max+=p; t.classList.remove("ok","no"); const sel=t.querySelector('[aria-pressed="true"]'); const ok=sel&&sel.dataset.v===t.dataset.a; t.classList.add(ok?"ok":"no"); if(ok) got+=p;});
+  root.querySelectorAll(".chips").forEach(c=>{const p=+c.dataset.p; const tg=targets(c); max+=tg.length*p; let s=0;
+    c.querySelectorAll(".chip").forEach(b=>{b.classList.remove("ok","no"); const isT=tg.includes(b), on=b.getAttribute("aria-pressed")==="true";
+      if(isT&&on){s+=p;b.classList.add("ok");} else if(isT&&!on){b.classList.add("no");} else if(!isT&&on){s-=p;b.classList.add("no");}});
+    got+=Math.max(0,s);});
+  root.querySelectorAll("select.sel").forEach(x=>{const p=+x.dataset.p; max+=p; x.classList.remove("ok","no"); const ok=x.value===x.dataset.a; x.classList.add(ok?"ok":"no"); if(ok) got+=p;});
+  root.querySelectorAll(".pick").forEach(g=>{const p=+g.dataset.p; max+=p; g.classList.remove("ok","no"); const sel=g.querySelector('[aria-pressed="true"]'); const ok=sel&&sel.dataset.i===g.dataset.a; g.classList.add(ok?"ok":"no"); if(ok) got+=p;});
+  root.querySelectorAll(".sgrp").forEach(g=>{const p=+g.dataset.p; max+=p; g.classList.remove("ok","no"); const ok=[...g.querySelectorAll(".sg")].every(b=>b.textContent===g.dataset.a); g.classList.add(ok?"ok":"no"); if(ok) got+=p;});
+  return [got,max];
+}
+function fillAnswers(root){
+  root.querySelectorAll("input.box").forEach(i=>i.value=i.dataset.a);
+  root.querySelectorAll(".tf").forEach(t=>t.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===t.dataset.a))));
+  root.querySelectorAll(".chips").forEach(c=>{const tg=targets(c); c.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",String(tg.includes(b))));});
+  root.querySelectorAll("select.sel").forEach(x=>x.value=x.dataset.a);
+  root.querySelectorAll(".pick").forEach(g=>g.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.i===g.dataset.a))));
+  root.querySelectorAll(".sgrp").forEach(g=>g.querySelectorAll(".sg").forEach(b=>b.textContent=g.dataset.a));
+}
+render(document.getElementById("practice"),PRACTICE,"pr");
+render(document.getElementById("test"),TEST,"ts");
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",String(x===b)));
+  ["practice","test","parent"].forEach(id=>document.getElementById(id).hidden=(id!==b.dataset.show));
+});
+</script>
+</body>
+</html>
