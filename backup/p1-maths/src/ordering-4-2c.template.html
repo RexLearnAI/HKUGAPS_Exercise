@@ -1,0 +1,413 @@
+<title>數數排序練習 1上B 4.2c</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;600&display=swap">
+<style>
+/* Layout: one A4-like worksheet column; each section is a sheet block with a number-chain / riddle grid. */
+:root{
+  --bg:#f3f6f4; --paper:#ffffff; --ink:#1f2a27; --muted:#5d6b66; --line:#c9d4cf;
+  --accent:#1c7a63; --accent-soft:#e1f1ea; --good:#1f8a4c; --bad:#c2412d; --hl:#fff4c2;
+  --f-display:"LXGW WenKai TC","Kaiti TC","STKaiti","Noto Sans TC",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141b19; --paper:#1d2624; --ink:#e7eeeb; --muted:#9aa9a3; --line:#3a4a45;
+  --accent:#5cc7a6; --accent-soft:#1f3a32; --good:#5fd08f; --bad:#ff8a73; --hl:#4a4220; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141b19; --paper:#1d2624; --ink:#e7eeeb; --muted:#9aa9a3; --line:#3a4a45;
+  --accent:#5cc7a6; --accent-soft:#1f3a32; --good:#5fd08f; --bad:#ff8a73; --hl:#4a4220; color-scheme:dark}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+.wrap{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header.top{display:flex;flex-direction:column;gap:6px}
+.eyebrow{font-size:13px;letter-spacing:.08em;color:var(--muted)}
+h1{font-family:var(--f-display);font-size:2rem;line-height:1.25;margin:0;text-wrap:balance}
+.lead{margin:0;color:var(--muted);max-width:62ch}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs button,.btn{font:inherit;font-size:15px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);
+  padding:6px 14px;border-radius:999px;cursor:pointer}
+.tabs button[aria-selected="true"],.btn.solid{background:var(--accent);color:var(--paper)}
+.btn:focus-visible,.tabs button:focus-visible,input:focus-visible,.chip:focus-visible,.tf button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sheet{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:20px max(16px,3vw);display:flex;flex-direction:column;gap:22px}
+.sheet-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:10px}
+.sheet-head h2{font-family:var(--f-display);font-size:1.5rem;margin:0}
+.meta{color:var(--muted);font-size:15px}
+.namebar{display:flex;gap:24px;flex-wrap:wrap;color:var(--muted);font-size:15px}
+.namebar span{border-bottom:1px solid var(--line);min-width:120px;display:inline-block}
+section.part{display:flex;flex-direction:column;gap:12px}
+.part h3{font-family:var(--f-display);font-size:1.2rem;margin:0;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.part h3 .marks{font-family:var(--f-body);font-size:14px;color:var(--muted);font-weight:400}
+.instr{margin:0;color:var(--muted)}
+ol.items{margin:0;padding-left:1.8em;display:flex;flex-direction:column;gap:14px}
+ol.items>li{padding-left:4px}
+.rule{font-size:14px;color:var(--accent);background:var(--accent-soft);padding:1px 8px;border-radius:4px;margin-left:6px;white-space:nowrap}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:4px;font-variant-numeric:tabular-nums;font-size:1.15rem}
+.chain .arrow{color:var(--muted)}
+.chain .given{min-width:2.4em;text-align:center}
+input.box{width:2.9em;height:2.1em;font:inherit;font-size:1.1rem;text-align:center;border:2px solid var(--ink);border-radius:3px;
+  background:var(--paper);color:var(--ink);font-variant-numeric:tabular-nums;padding:0}
+input.box.ok{border-color:var(--good);background:color-mix(in srgb,var(--good) 14%,var(--paper))}
+input.box.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--paper))}
+.bubble{border:1.5px solid var(--line);border-radius:14px;padding:10px 14px;background:var(--paper);max-width:60ch}
+.who{font-family:var(--f-display);font-weight:700;color:var(--accent);margin-right:6px}
+.dots{display:flex;flex-wrap:wrap;gap:12px;margin:6px 0}
+.grp{display:grid;gap:4px;padding:6px;border:1.5px dashed var(--line);border-radius:8px}
+.grp i{width:14px;height:14px;border-radius:50%;background:var(--accent);display:block}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{font:inherit;font-size:1.2rem;min-width:3em;padding:4px 10px;border:2px solid transparent;border-radius:999px;background:var(--accent-soft);color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--hl)}
+.chip.ok{border-color:var(--good)} .chip.no{border-color:var(--bad)}
+.tf{display:inline-flex;gap:6px;margin-left:8px;vertical-align:middle}
+.tf button{font:inherit;width:2.2em;height:2em;border:2px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);cursor:pointer}
+.tf button[aria-pressed="true"]{border-color:var(--ink);background:var(--hl)}
+.tf.ok button[aria-pressed="true"]{border-color:var(--good)} .tf.no button[aria-pressed="true"]{border-color:var(--bad)}
+.sg{font:inherit;font-size:1.2rem;width:2.2em;height:2em;border:2px dashed var(--accent);border-radius:6px;background:var(--paper);color:var(--ink);cursor:pointer;font-weight:700}
+.sg:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sgrp.ok .sg{border-style:solid;border-color:var(--good)} .sgrp.no .sg{border-style:solid;border-color:var(--bad)}
+.order.ok .sg{border-style:solid;border-color:var(--good)} .order.no .sg{border-style:solid;border-color:var(--bad)}
+.order{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px;font-variant-numeric:tabular-nums}
+.cmp{display:inline-flex;gap:8px;align-items:center;font-size:1.2rem;font-variant-numeric:tabular-nums;margin-left:4px}
+.ans-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line);padding-top:14px}
+.score{font-family:var(--f-display);font-size:1.3rem;color:var(--accent)}
+.note{font-size:14px;color:var(--muted);margin:0}
+.parent{font-size:15px;color:var(--muted);border-left:3px solid var(--accent);padding-left:12px;margin:0;max-width:65ch}
+.voicebar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 12px;
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.voicebar .lbl{font-weight:600}
+.seg{display:inline-flex;border:1.5px solid var(--accent);border-radius:999px;overflow:hidden}
+.seg button{font:inherit;font-size:15px;border:0;background:transparent;color:var(--accent);padding:5px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--paper)}
+.seg button:focus-visible,.spk:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.vstatus{font-size:13px;color:var(--muted);flex-basis:100%}
+.vstatus:empty{display:none}
+.spk{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:none;border-radius:50%;border:1.5px solid var(--accent);
+  background:var(--accent-soft);color:var(--accent);cursor:pointer;padding:0;vertical-align:middle;margin-right:6px}
+.spk svg{width:18px;height:18px}
+.spk.on{background:var(--accent);color:var(--paper)}
+.speaking{background:var(--hl);border-radius:6px;box-shadow:0 0 0 6px var(--hl)}
+.cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.fc{perspective:700px;height:150px;border:0;background:none;padding:0;cursor:pointer;font:inherit;color:inherit}
+.fc:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:12px}
+.fc-in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.fc.flip .fc-in{transform:rotateY(180deg)}
+.fc-f,.fc-b{position:absolute;inset:0;border-radius:12px;border:1.5px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.fc-f{background:var(--paper)}
+.fc-f .w{font-family:var(--f-display);font-size:2.2rem;line-height:1.2;text-align:center}
+.fc-f .hint{font-size:12px;color:var(--muted)}
+.fc-b{background:var(--accent-soft);transform:rotateY(180deg)}
+.fc-b .e{font-size:2.2rem;line-height:1.1}
+.fc-b .w2{font-family:var(--f-display);font-size:1.3rem}
+.fc-b .en{font-size:14px;color:var(--muted);text-align:center;line-height:1.3}
+.fc.on .fc-b{box-shadow:0 0 0 3px var(--accent) inset}
+@media (prefers-reduced-motion:reduce){.fc-in{transition:none}}
+@media (max-width:480px){h1{font-size:1.6rem} input.box{width:2.6em}}
+@media print{
+  body{background:#fff;color:#000;padding:0} .tabs,.actions,.no-print,.voicebar,.spk{display:none!important}
+  .sheet{border:none;padding:0;break-after:page} [hidden]{display:block!important}
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">港大同學會小學 · 一年級數學 · 1上B 單元 4 · 根據 WS 4.2c</div>
+    <h1>數數方法：圈一圈，排一排</h1>
+    <p class="lead">練習卷和模擬測驗的題型跟學校工作紙一樣：圈出能每 2 個、5 個或 10 個一數的數，再由小至大或由大至小排列，用「&lt;」或「&gt;」表示。可以在畫面上直接作答，然後按「對答案」；也可以列印出來用筆做。</p>
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tab-practice" aria-selected="true" data-show="practice">練習卷</button>
+      <button role="tab" id="tab-test" aria-selected="false" data-show="test">模擬測驗</button>
+      <button role="tab" id="tab-cards" aria-selected="false" data-show="cards">生字卡</button>
+      <button role="tab" id="tab-parent" aria-selected="false" data-show="parent">家長須知</button>
+    </div>
+  </header>
+
+  <div class="voicebar" role="group" aria-label="讀出題目">
+    <span class="lbl">讀出題目：</span>
+    <span class="seg">
+      <button type="button" id="lang-yue" data-lang="yue" aria-pressed="true">廣東話</button>
+      <button type="button" id="lang-cmn" data-lang="cmn" aria-pressed="false">普通話</button>
+    </span>
+    <span class="seg">
+      <button type="button" id="rate-slow" data-rate="0.75" aria-pressed="true">慢</button>
+      <button type="button" id="rate-norm" data-rate="1" aria-pressed="false">正常</button>
+    </span>
+    <span class="note">按題目旁的 <b>喇叭</b> 聽題目，再按一次停止。</span>
+    <span class="vstatus" id="vstatus" aria-live="polite"></span>
+  </div>
+
+  <div id="practice" class="sheet"></div>
+  <div id="test" class="sheet" hidden></div>
+  <div id="cards" class="sheet" hidden>
+    <div class="sheet-head"><h2>生字卡</h2><span class="meta">練習卷和模擬測驗裏的字詞</span></div>
+    <p class="instr">先看字，想想怎樣讀，再按一下卡片翻轉，就會聽到讀音。上面可以選廣東話或普通話。</p>
+    <div class="cardgrid" id="cardgrid"></div>
+  </div>
+  <div id="parent" class="sheet" hidden>
+    <div class="sheet-head"><h2>家長須知</h2></div>
+    <p class="parent">這張工作紙要孩子先認出哪些數「能每 2 個、5 個或 10 個一數」，再排先後次序。小竅門看個位：<b>每 2 個一數</b>的數，個位是 0、2、4、6、8；<b>每 5 個一數</b>的數，個位是 0 或 5；<b>每 10 個一數</b>的數，個位是 0。</p>
+    <p class="parent">「能每 2 個<b>和</b> 10 個一數」即是兩樣都要做到，所以只剩個位是 0 的數。「每 2 個、5 個和 10 個」也是一樣，只圈個位是 0 的數。</p>
+    <p class="parent">符號記法：開口向大的一邊。由小至大用「&lt;」（例如 6 &lt; 38 &lt; 78），由大至小用「&gt;」（例如 100 &gt; 66 &gt; 12）。在畫面上，點一下方格中間的符號就可以轉換「&lt;」和「&gt;」。</p>
+    <p class="parent">模擬測驗建議限時 30 分鐘。按「交卷」會計分；做完後可按「顯示答案」一起檢討錯題。</p>
+  </div>
+</div>
+
+<script>
+const PRACTICE = {
+  title:"練習卷", meta:"約 20 分鐘",
+  parts:[
+    {h:"一、圈一圈，排一排", instr:"點選（或圈出）合適的數，然後在方格內由小至大或由大至小寫出來，再點方格之間的符號選「<」或「>」。", type:"sort", items:[
+      {div:[2], asc:true,  nums:[17,42,9,64,30,55]},
+      {div:[2], asc:false, nums:[58,21,90,36,47,13]},
+      {div:[5], asc:true,  nums:[35,18,50,72,15,44]},
+      {div:[5], asc:false, nums:[85,26,65,90,31,52]},
+      {div:[10], asc:false, nums:[20,57,70,34,50,93]},
+      {div:[10], asc:true, nums:[90,19,40,64,10,85]},
+      {div:[2,10], asc:true, nums:[34,50,25,80,46,20]},
+      {div:[5,10], asc:false, nums:[60,35,30,85,90,42]},
+      {div:[2,5,10], asc:true, nums:[44,70,55,20,68,40]},
+    ]},
+    {h:"二、對的加 ✓，錯的加 ✗", type:"tf", items:[
+      {q:"個位是 0 的數，可以每 10 個一數數出來。", a:true},
+      {q:"能每 5 個一數的數，個位一定是 5。", a:false},
+      {q:"能每 10 個一數的數，也能每 2 個一數。", a:true},
+      {q:"45 可以每 2 個一數數出來。", a:false},
+      {q:"60 可以每 2 個、5 個和 10 個一數數出來。", a:true},
+    ]},
+    {h:"三、填上「<」或「>」", instr:"點一下中間的方格選符號。", type:"cmp", items:[
+      {x:38,y:83},{x:70,y:65},{x:45,y:54},{x:100,y:90},{x:29,y:92},{x:56,y:50},
+    ]},
+  ]
+};
+
+const TEST = {
+  title:"模擬測驗", meta:"限時 30 分鐘", test:true,
+  parts:[
+    {h:"一、對的加 ✓，錯的加 ✗", type:"tf", per:1, items:[
+      {q:"50 可以每 5 個一數數出來。", a:true},
+      {q:"72 可以每 10 個一數數出來。", a:false},
+      {q:"35 可以每 2 個一數數出來。", a:false},
+      {q:"能每 2 個一數的數，個位是 0、2、4、6 或 8。", a:true},
+      {q:"能每 5 個一數的數，一定能每 10 個一數。", a:false},
+      {q:"100 可以每 2 個、5 個和 10 個一數數出來。", a:true},
+    ]},
+    {h:"二、填上「<」或「>」", instr:"點一下中間的方格選符號。", type:"cmp", per:1, items:[
+      {x:47,y:74},{x:80,y:68},{x:15,y:51},{x:99,y:100},{x:63,y:36},{x:40,y:45},
+    ]},
+    {h:"三、圈一圈，排一排", instr:"每題：圈對一個數得 1 分（圈錯扣 1 分），方格內每個數 1 分，符號全對 1 分。", type:"sort", per:1, items:[
+      {div:[2], asc:true, nums:[31,16,57,82,44,9]},
+      {div:[5], asc:false, nums:[75,22,40,63,95,18]},
+      {div:[10], asc:true, nums:[60,36,100,47,30,25]},
+      {div:[2,10], asc:false, nums:[32,70,45,10,64,90]},
+      {div:[5,10], asc:true, nums:[55,80,40,26,15,50]},
+      {div:[2,5,10], asc:false, nums:[25,60,48,30,75,90]},
+    ]},
+  ]
+};
+
+const divText=d=>d.length===1?`${d[0]} 個`:d.slice(0,-1).map(x=>x+" 個").join("、")+"和 "+d[d.length-1]+" 個";
+const sortQ=it=>`圈出能每 ${divText(it.div)}一數的數，把它們由${it.asc?"小至大":"大至小"}排列出來，並以「<」或「>」表示。`;
+const fits=(n,d)=>d.every(x=>n%x===0);
+
+/* ---------- Read aloud (Web Speech API, uses the device's own Cantonese / Mandarin voices) ---------- */
+const TTS={lang:"yue",rate:0.75,voices:[],cur:null};
+const SYN=("speechSynthesis" in window)?window.speechSynthesis:null;
+try{const s=JSON.parse(localStorage.getItem("tts")||"{}"); if(s.lang) TTS.lang=s.lang; if(s.rate===0.75||s.rate===1) TTS.rate=s.rate;}catch(e){}
+function saveTTS(){try{localStorage.setItem("tts",JSON.stringify({lang:TTS.lang,rate:TTS.rate}));}catch(e){}}
+function loadVoices(){ if(SYN){ TTS.voices=SYN.getVoices()||[]; } voiceStatus(); }
+function pickVoice(lang){
+  const v=TTS.voices, L=x=>(x.lang||"").toLowerCase().replace("_","-");
+  if(lang==="yue") return v.find(x=>/^(zh-hk|yue)/.test(L(x))) || v.find(x=>/cantonese|粵|廣東/i.test(x.name)) || null;
+  return v.find(x=>L(x)==="zh-cn") || v.find(x=>L(x)==="zh-tw") || v.find(x=>/^(cmn|zh)/.test(L(x)) && !/^zh-hk/.test(L(x))) || v.find(x=>/mandarin|普通話|國語/i.test(x.name)) || null;
+}
+function voiceStatus(){
+  const st=document.getElementById("vstatus"); if(!st) return;
+  if(document.getElementById("audio-data")){st.textContent="";return;}
+  if(!SYN){st.textContent="這個瀏覽器不支援朗讀。請改用 iPad / iPhone 的 Safari，或 Android / 電腦的 Chrome。";return;}
+  if(!TTS.voices.length){st.textContent="";return;}
+  const v=pickVoice(TTS.lang);
+  st.textContent=v?"":(TTS.lang==="yue"
+    ?"這部裝置找不到廣東話語音，會改用預設中文聲音。可在裝置設定中加入「粵語（香港）」語音。"
+    :"這部裝置找不到普通話語音，會改用預設中文聲音。可在裝置設定中加入「中文（普通話）」語音。");
+}
+if(SYN){ loadVoices(); SYN.onvoiceschanged=loadVoices; }
+function stopSpeak(){ if(SYN&&(SYN.speaking||SYN.pending)) SYN.cancel(); try{PLAYER.pause();}catch(e){} if(TTS.cur){TTS.cur.btn.classList.remove("on"); TTS.cur.box&&TTS.cur.box.classList.remove("speaking"); TTS.cur=null;} }
+const norm=t=>t.replace(/\$(\d+)/g,"$1元").replace(/[✓]/g,"剔號").replace(/[✗]/g,"交叉").replace(/□/g,"方格").replace(/「<」/g,"小於符號").replace(/「>」/g,"大於符號");
+let AUDIO=null; const PLAYER=new Audio(); PLAYER.preload="auto";
+function audioFor(lang,text){
+  if(AUDIO===null){ try{AUDIO=JSON.parse(document.getElementById("audio-data").textContent);}catch(e){AUDIO={};} }
+  const a=AUDIO[lang]&&AUDIO[lang][text]; return a?"data:audio/mpeg;base64,"+a:null;
+}
+function speak(raw,btn,box){
+  const text=norm(raw);
+  const same=TTS.cur&&TTS.cur.btn===btn; stopSpeak(); if(same) return;
+  const src=audioFor(TTS.lang,text);
+  if(src){
+    TTS.cur={btn,box}; btn.classList.add("on"); box&&box.classList.add("speaking");
+    PLAYER.src=src; PLAYER.playbackRate=TTS.rate; PLAYER.preservesPitch=true;
+    PLAYER.onended=PLAYER.onerror=()=>{ if(TTS.cur&&TTS.cur.btn===btn) stopSpeak(); };
+    const pr=PLAYER.play(); if(pr&&pr.catch) pr.catch(()=>{ if(TTS.cur&&TTS.cur.btn===btn) stopSpeak(); });
+    return;
+  }
+  if(!SYN){voiceStatus();return;}
+  const u=new SpeechSynthesisUtterance(text);
+  const v=pickVoice(TTS.lang); if(v){u.voice=v;u.lang=v.lang;} else u.lang=TTS.lang==="yue"?"zh-HK":"zh-CN";
+  u.rate=TTS.rate;
+  TTS.cur={btn,box}; btn.classList.add("on"); box&&box.classList.add("speaking");
+  u.onend=u.onerror=()=>{ if(TTS.cur&&TTS.cur.btn===btn) stopSpeak(); };
+  if(SYN.paused) SYN.resume();
+  SYN.speak(u);
+}
+const ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+window.__SAYS=[];
+function spk(textFn,boxFn){ window.__SAYS.push(textFn);const b=document.createElement("button"); b.type="button"; b.className="spk"; b.innerHTML=ICON; b.setAttribute("aria-label","讀出題目");
+  b.onclick=()=>speak(textFn(TTS.lang),b,boxFn?boxFn():b.parentElement); return b;}
+const HOW=l=>l==="yue"?"幾多":"多少";
+const BLANK="空格";
+const chainSay=seq=>seq.map(v=>Array.isArray(v)?BLANK:v).join("，");
+function sync(){
+  document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===TTS.lang)));
+  document.querySelectorAll("[data-rate]").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.rate===TTS.rate)));
+  voiceStatus();
+}
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{TTS.lang=b.dataset.lang; stopSpeak(); saveTTS(); sync();});
+document.querySelectorAll("[data-rate]").forEach(b=>b.onclick=()=>{TTS.rate=+b.dataset.rate; saveTTS(); sync();});
+sync();
+
+let uid=0;
+const el=(tag,cls,html)=>{const e=document.createElement(tag); if(cls) e.className=cls; if(html!=null) e.innerHTML=html; return e;};
+function box(ans,pts,prefix){const i=el("input","box"); i.id=prefix+"-b"+(uid++); i.inputMode="numeric"; i.autocomplete="off"; i.maxLength=3; i.dataset.a=ans; i.dataset.p=pts; i.setAttribute("aria-label","答案"); return i;}
+function signBtn(prefix){const b=el("button","sg","?"); b.type="button"; b.id=prefix+"-s"+(uid++); b.setAttribute("aria-label","選擇符號");
+  b.onclick=()=>{b.textContent=b.textContent==="<"?">":"<";}; return b;}
+function chainRow(seq,pts,prefix){
+  const row=el("div","chain");
+  seq.forEach((v,k)=>{ if(k) row.append(el("span","arrow","→"));
+    row.append(Array.isArray(v)? box(v[0],pts,prefix) : el("span","given",String(v))); });
+  return row;
+}
+function render(root,data,prefix){
+  root.innerHTML="";
+  const head=el("div","sheet-head");
+  head.append(el("h2",null,data.title), el("span","meta",data.meta+(data.test?` · 滿分 <span id="${prefix}-full"></span> 分`:"")));
+  root.append(head);
+  root.append(el("div","namebar",`<div>姓名：<span></span></div><div>日期：<span></span></div>${data.test?'<div>得分：<span></span></div>':''}`));
+  data.parts.forEach((p,pi)=>{
+    const s=el("section","part"); const per=p.per||1;
+    const h=el("h3",null,p.h); s.append(h);
+    h.prepend(spk(()=>p.h+"。"+(p.instr||"")+(p.type==="circle"?`請點選所有${p.pick}。`:""), ()=>h));
+    if(p.instr) s.append(el("p","instr",p.instr));
+    if(p.type==="circle"){
+      s.append(el("p","instr",`點選（或用筆圈出）所有${p.pick}。`));
+      const wrap=el("div","chips"); wrap.dataset.pick=p.pick; wrap.dataset.p=per;
+      p.nums.forEach(n=>{const b=el("button","chip",String(n)); b.type="button"; b.id=`${prefix}-c${pi}-${n}`; b.setAttribute("aria-pressed","false"); b.dataset.n=n;
+        b.onclick=()=>b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")==="true"?"false":"true"); wrap.append(b);});
+      s.append(wrap);
+      if(data.test){const tgt=p.nums.filter(n=>(p.pick==="單數")===(n%2===1)).length; h.querySelector("span")||h.append(el("span","marks",`（${tgt*per} 分，圈錯一個扣 1 分）`));}
+    } else {
+      const ol=el("ol","items");
+      p.items.forEach(it=>{
+        const li=el("li");
+        if(p.type==="chain"){ if(it.rule) li.append(el("span","rule",it.rule)); li.append(chainRow(it.seq,per,prefix)); }
+        if(p.type==="dots"){
+          const d=el("div","dots"); const cols=it.g===10?5:it.g;
+          for(let k=0;k<it.n;k++){const g=el("div","grp"); g.style.gridTemplateColumns=`repeat(${cols},14px)`; for(let j=0;j<it.g;j++) g.append(el("i")); d.append(g);}
+          li.append(el("span",null,`每 ${it.g} 粒一數：`), d);
+          if(!p.noChain){const seq=[it.g]; for(let k=2;k<=it.n;k++) seq.push([it.g*k]); li.append(chainRow(seq,1,prefix));}
+          const line=el("div","ans-line"); line.append(el("span",null,"共有"), box(it.g*it.n,per,prefix), el("span",null,it.unit+"。")); li.append(line);
+        }
+        if(p.type==="tf"){
+          li.append(el("span",null,it.q));
+          const g=el("span","tf"); g.dataset.a=it.a; g.dataset.p=per;
+          [["✓",true],["✗",false]].forEach(([t,v])=>{const b=el("button",null,t); b.type="button"; b.id=prefix+"-t"+(uid++); b.dataset.v=v; b.setAttribute("aria-pressed","false"); b.setAttribute("aria-label",v?"對":"錯");
+            b.onclick=()=>{g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true");}; g.append(b);});
+          li.append(g);
+        }
+        if(p.type==="riddle"){
+          const bub=el("div","bubble"); bub.append(el("span","who",it.who+"："), document.createTextNode(it.t+" "), box(it.a,per,prefix), document.createTextNode(" "+it.u+"。"));
+          li.append(bub);
+        }
+        if(p.type==="sort"){
+          li.append(el("div",null,sortQ(it)));
+          const wrap=el("div","chips"); wrap.dataset.div=it.div.join(","); wrap.dataset.p=per; wrap.style.marginTop="6px";
+          it.nums.forEach(n=>{const b=el("button","chip",String(n)); b.type="button"; b.id=prefix+"-c"+(uid++); b.setAttribute("aria-pressed","false"); b.dataset.n=n;
+            b.onclick=()=>b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")==="true"?"false":"true"); wrap.append(b);});
+          li.append(wrap);
+          const ans=it.nums.filter(n=>fits(n,it.div)).sort((a,b)=>it.asc?a-b:b-a);
+          const row=el("div","order sgrp"); row.dataset.a=it.asc?"<":">"; row.dataset.p=per;
+          ans.forEach((n,k)=>{ if(k) row.append(signBtn(prefix)); row.append(box(n,per,prefix)); });
+          li.append(row);
+        }
+        if(p.type==="cmp"){
+          const row=el("span","cmp sgrp"); row.dataset.a=it.x<it.y?"<":">"; row.dataset.p=per;
+          row.append(el("span",null,String(it.x)), signBtn(prefix), el("span",null,String(it.y)));
+          li.append(row);
+        }
+        if(p.type==="word"){
+          li.append(el("div",null,it.t), chainRow(it.seq,per,prefix));
+          const line=el("div","ans-line"); line.append(el("span",null,it.pre), box(it.a,per,prefix), el("span",null,it.u+"。")); li.append(line);
+        }
+        const say={
+          chain:l=>(it.rule?it.rule+"。":"")+chainSay(it.seq)+"。"+(l==="yue"?"空格要填咩數字？":"空格要填甚麼數字？"),
+          dots:l=>`每組有 ${it.g} 粒。每 ${it.g} 粒一數，一共有${HOW(l)}粒？`,
+          tf:l=>it.q+(l==="yue"?"啱定錯？":"對還是錯？"),
+          riddle:l=>it.who+(l==="yue"?"話：":"說：")+it.t+HOW(l)+it.u+"？",
+          word:l=>it.t+"。"+chainSay(it.seq)+"。",
+          sort:l=>sortQ(it)+(l==="yue"?"啲數字係：":"數字有：")+it.nums.join("，")+"。",
+          cmp:l=>`${it.x} 同 ${it.y}，${l==="yue"?"應該用":"應該用"}大於定小於符號？`.replace("同",l==="yue"?"同":"和").replace("定",l==="yue"?"定":"還是"),
+        }[p.type];
+        if(say){ const tgt=p.type==="riddle"?li.querySelector(".bubble"):li; tgt.prepend(spk(say,()=>li)); }
+        ol.append(li);
+      });
+      s.append(ol);
+      if(data.test){ const m=sectionMax(s); h.append(el("span","marks",`（${m} 分）`)); }
+    }
+    root.append(s);
+  });
+  const act=el("div","actions");
+  const chk=el("button","btn solid",data.test?"交卷":"對答案"); chk.type="button"; chk.id=prefix+"-check";
+  const show=el("button","btn","顯示答案"); show.type="button"; show.id=prefix+"-show";
+  const clr=el("button","btn","清除重做"); clr.type="button"; clr.id=prefix+"-clear";
+  const sc=el("span","score"); sc.id=prefix+"-score"; sc.setAttribute("aria-live","polite");
+  act.append(chk,show,clr,sc); root.append(act);
+  if(data.test){ document.getElementById(prefix+"-full").textContent=sheetMax(root); }
+  chk.onclick=()=>{const [got,max]=grade(root); sc.textContent=data.test?`得分：${got} / ${max}`:`答對 ${got} / ${max}`;};
+  show.onclick=()=>{fillAnswers(root); grade(root); sc.textContent="已顯示答案";};
+  clr.onclick=()=>{render(root,data,prefix);};
+}
+function sectionMax(s){let m=0; s.querySelectorAll("input.box").forEach(i=>m+=+i.dataset.p); s.querySelectorAll(".tf,.sgrp").forEach(t=>m+=+t.dataset.p); s.querySelectorAll(".chips").forEach(c=>m+=targets(c).length*+c.dataset.p); return m;}
+function sheetMax(root){let m=0; root.querySelectorAll("section.part").forEach(s=>{m+=sectionMax(s);}); return m;}
+function targets(c){const all=[...c.querySelectorAll(".chip")]; if(c.dataset.div){const d=c.dataset.div.split(",").map(Number); return all.filter(b=>fits(+b.dataset.n,d));} return all.filter(b=>(c.dataset.pick==="單數")===(+b.dataset.n%2===1));}
+function grade(root){
+  let got=0,max=0;
+  root.querySelectorAll("input.box").forEach(i=>{const p=+i.dataset.p; max+=p; i.classList.remove("ok","no"); if(i.value.trim()==="") {i.classList.add("no"); return;} const ok=+i.value.trim()===+i.dataset.a; i.classList.add(ok?"ok":"no"); if(ok) got+=p;});
+  root.querySelectorAll(".tf").forEach(t=>{const p=+t.dataset.p; max+=p; t.classList.remove("ok","no"); const sel=t.querySelector('[aria-pressed="true"]'); const ok=sel&&sel.dataset.v===t.dataset.a; t.classList.add(ok?"ok":"no"); if(ok) got+=p;});
+  root.querySelectorAll(".chips").forEach(c=>{const p=+c.dataset.p; const tg=targets(c); max+=tg.length*p; let s=0;
+    c.querySelectorAll(".chip").forEach(b=>{b.classList.remove("ok","no"); const isT=tg.includes(b), on=b.getAttribute("aria-pressed")==="true";
+      if(isT&&on){s+=p;b.classList.add("ok");} else if(isT&&!on){b.classList.add("no");} else if(!isT&&on){s-=p;b.classList.add("no");}});
+    got+=Math.max(0,s);});
+  root.querySelectorAll(".sgrp").forEach(g=>{const p=+g.dataset.p; max+=p; g.classList.remove("ok","no"); const ok=[...g.querySelectorAll(".sg")].every(b=>b.textContent===g.dataset.a); g.classList.add(ok?"ok":"no"); if(ok) got+=p;});
+  return [got,max];
+}
+function fillAnswers(root){
+  root.querySelectorAll("input.box").forEach(i=>i.value=i.dataset.a);
+  root.querySelectorAll(".tf").forEach(t=>t.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===t.dataset.a))));
+  root.querySelectorAll(".chips").forEach(c=>{const tg=targets(c); c.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",String(tg.includes(b))));});
+  root.querySelectorAll(".sgrp").forEach(g=>g.querySelectorAll(".sg").forEach(b=>b.textContent=g.dataset.a));
+}
+render(document.getElementById("practice"),PRACTICE,"pr");
+render(document.getElementById("test"),TEST,"ts");
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",String(x===b)));
+  ["practice","test","cards","parent"].forEach(id=>document.getElementById(id).hidden=(id!==b.dataset.show));
+});
+const VOCAB=[{"w": "圈出", "e": "⭕", "en": "circle"}, {"w": "排列", "e": "📶", "en": "put in order"}, {"w": "由小至大", "e": "📈", "en": "smallest to biggest"}, {"w": "由大至小", "e": "📉", "en": "biggest to smallest"}, {"w": "大於", "e": "➡️", "en": "greater than ( > )"}, {"w": "小於", "e": "⬅️", "en": "less than ( < )"}, {"w": "符號", "e": "➕", "en": "sign / symbol"}, {"w": "表示", "e": "👉", "en": "show"}, {"w": "個位", "e": "1️⃣", "en": "ones digit"}, {"w": "能", "e": "👍", "en": "can"}, {"w": "一定", "e": "💯", "en": "must / always"}, {"w": "每", "e": "🔁", "en": "every"}, {"w": "數", "e": "🔢", "en": "number"}, {"w": "對", "e": "✔️", "en": "right"}, {"w": "錯", "e": "❌", "en": "wrong"}];
+(function(){
+  const g=document.getElementById("cardgrid"); if(!g) return;
+  VOCAB.forEach((v,i)=>{
+    const c=el("button","fc"); c.type="button"; c.id="fc-"+i; c.setAttribute("aria-label",v.w+"，按一下翻卡並讀出");
+    c.innerHTML=`<div class="fc-in"><div class="fc-f"><span class="w">${v.w}</span><span class="hint">按一下翻轉</span></div><div class="fc-b"><span class="e">${v.e}</span><span class="w2">${v.w}</span><span class="en">${v.en}</span></div></div>`;
+    c.onclick=()=>{ const back=!c.classList.contains("flip"); c.classList.toggle("flip",back);
+      if(back){ if(TTS.cur&&TTS.cur.btn===c) stopSpeak(); speak(v.w,c,null); } else if(TTS.cur&&TTS.cur.btn===c) stopSpeak(); };
+    g.append(c);
+  });
+})();
+</script>
